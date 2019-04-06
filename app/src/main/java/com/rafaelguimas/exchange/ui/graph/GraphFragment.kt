@@ -5,13 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.rafaelguimas.domain.extension.observe
+import com.rafaelguimas.domain.model.HistoryModel
+import com.rafaelguimas.exchange.DateValueFormatter
 import com.rafaelguimas.exchange.R
 import kotlinx.android.synthetic.main.graph_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class GraphFragment : Fragment() {
@@ -32,16 +38,49 @@ class GraphFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        lifecycle.addObserver(viewModel)
 
+        observe(viewModel.historyExchangeLiveData) { historyModel ->
+            historyModel?.let {
+                setData(it)
+            }
+        }
+
+        observe(viewModel.failureLiveData) {
+            Toast.makeText(context, "Something went wrong. =/", Toast.LENGTH_LONG).show()
+        }
+
+        observe(viewModel.progressLiveData) { progress ->
+            progress?.let {
+                pbGraphProgress.visibility = if (it) View.VISIBLE else View.GONE
+                lcGraphChart.visibility = if (it) View.GONE else View.VISIBLE
+            }
+        }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun setData(historyModel: HistoryModel) {
+        val entries = ArrayList<Entry>()
 
-        setData()
+        historyModel.rates.toSortedMap().forEach { period ->
+            val dateTime = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(period.key).time
+
+            period.value.forEach { data ->
+                entries.add(Entry(dateTime.toFloat(), data.value.toFloat()))
+            }
+        }
+
+        val dataSet = LineDataSet(entries, "Dolar")
+        dataSet.color = Color.BLUE
+        dataSet.valueTextColor = Color.BLACK
+
+        lcGraphChart.xAxis.valueFormatter = DateValueFormatter()
+
+        val lineData = LineData(dataSet)
+        lcGraphChart.data = lineData
+        lcGraphChart.invalidate()
     }
 
-    private fun setData() {
+    private fun setExampleData() {
         val entries = ArrayList<Entry>()
 
         entries.add(Entry(1f, 1f))
@@ -57,7 +96,7 @@ class GraphFragment : Fragment() {
         dataSet.valueTextColor = Color.BLACK
 
         val lineData = LineData(dataSet)
-        lcGraph.data = lineData
-        lcGraph.invalidate()
+        lcGraphChart.data = lineData
+        lcGraphChart.invalidate()
     }
 }
