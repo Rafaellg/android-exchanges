@@ -1,6 +1,5 @@
 package com.rafaelguimas.exchange.ui.graph
 
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -89,7 +88,7 @@ class GraphFragment : Fragment() {
             setDrawCircles(false)
         }
 
-        // Customize chart colors
+        // Customize chart
         lcGraphChart.xAxis.apply {
             valueFormatter = DateValueFormatter()
             textColor = Color.WHITE
@@ -97,6 +96,7 @@ class GraphFragment : Fragment() {
         lcGraphChart.axisLeft.textColor = Color.WHITE
         lcGraphChart.axisRight.textColor = Color.WHITE
         lcGraphChart.legend.textColor = Color.WHITE
+        lcGraphChart.description.isEnabled = false
 
         // Set data on graph
         lcGraphChart.data = LineData(dataSet)
