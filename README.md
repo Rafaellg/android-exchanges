@@ -4,9 +4,10 @@ This project is an example of Clean Architecture application using Use Cases.
 
 ### Libraries:
 - Kotlin Coroutines Android
+- Koin
 - Retrofit (Gson Converter and Coroutines Adapter)
 - Android Architectures
-- Koin
+- MPAndroidChart
 - ThreeTenAbp
 - Mockito Kotlin 2
 
