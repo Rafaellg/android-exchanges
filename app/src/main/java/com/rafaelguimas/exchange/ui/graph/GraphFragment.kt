@@ -6,14 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.rafaelguimas.domain.extension.observe
 import com.rafaelguimas.domain.model.HistoryModel
-import com.rafaelguimas.exchange.DateValueFormatter
 import com.rafaelguimas.exchange.R
+import com.rafaelguimas.exchange.extension.observe
+import com.rafaelguimas.exchange.util.DateValueFormatter
 import kotlinx.android.synthetic.main.graph_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
@@ -35,6 +37,15 @@ class GraphFragment : Fragment() {
         return inflater.inflate(R.layout.graph_fragment, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        btGraphOneYear.setOnClickListener { viewModel.updateGraphMonthPeriod(12) }
+        btGraphSixMonths.setOnClickListener { viewModel.updateGraphMonthPeriod(6) }
+        btThreeMonths.setOnClickListener { viewModel.updateGraphMonthPeriod(3) }
+        btOneMonth.setOnClickListener { viewModel.updateGraphMonthPeriod(1) }
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -47,7 +58,7 @@ class GraphFragment : Fragment() {
         }
 
         observe(viewModel.failureLiveData) {
-            Toast.makeText(context, "Something went wrong. =/", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, R.string.error_generic, Toast.LENGTH_LONG).show()
         }
 
         observe(viewModel.progressLiveData) { progress ->
@@ -59,8 +70,8 @@ class GraphFragment : Fragment() {
     }
 
     private fun setData(historyModel: HistoryModel) {
+        // Create entries list
         val entries = ArrayList<Entry>()
-
         historyModel.rates.toSortedMap().forEach { period ->
             val dateTime = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(period.key).time
 
@@ -69,34 +80,25 @@ class GraphFragment : Fragment() {
             }
         }
 
-        val dataSet = LineDataSet(entries, "Dolar")
-        dataSet.color = Color.BLUE
-        dataSet.valueTextColor = Color.BLACK
+        // Create dataset with entries
+        val dataSet = LineDataSet(entries, getString(R.string.label_dolar))
+        dataSet.apply {
+            color = ContextCompat.getColor(context as AppCompatActivity, R.color.colorPrimary)
+            valueTextColor = Color.WHITE
+            setDrawCircles(false)
+        }
 
-        lcGraphChart.xAxis.valueFormatter = DateValueFormatter()
+        // Customize chart colors
+        lcGraphChart.xAxis.apply {
+            valueFormatter = DateValueFormatter()
+            textColor = Color.WHITE
+        }
+        lcGraphChart.axisLeft.textColor = Color.WHITE
+        lcGraphChart.axisRight.textColor = Color.WHITE
+        lcGraphChart.legend.textColor = Color.WHITE
 
-        val lineData = LineData(dataSet)
-        lcGraphChart.data = lineData
-        lcGraphChart.invalidate()
-    }
-
-    private fun setExampleData() {
-        val entries = ArrayList<Entry>()
-
-        entries.add(Entry(1f, 1f))
-        entries.add(Entry(2f, 9f))
-        entries.add(Entry(3f, 5f))
-        entries.add(Entry(4f, 2f))
-        entries.add(Entry(5f, 6f))
-        entries.add(Entry(6f, 3f))
-        entries.add(Entry(7f, 1f))
-
-        val dataSet = LineDataSet(entries, "Label")
-        dataSet.color = Color.BLUE;
-        dataSet.valueTextColor = Color.BLACK
-
-        val lineData = LineData(dataSet)
-        lcGraphChart.data = lineData
+        // Set data on graph
+        lcGraphChart.data = LineData(dataSet)
         lcGraphChart.invalidate()
     }
 }

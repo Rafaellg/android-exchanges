@@ -1,4 +1,4 @@
-package com.rafaelguimas.domain.extension
+package com.rafaelguimas.exchange.extension
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData

@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Exchange</string>
+
+    <string name="action_period_1y">1Y</string>
+    <string name="action_period_6m">6M</string>
+    <string name="action_period_3m">3M</string>
+    <string name="action_period_1m">1M</string>
+
+    <string name="error_generic">Something went worng. =/</string>
+    <string name="label_dolar">Dolar</string>
+    <string name="chart_title">Dollar-euro exchange</string>
 </resources>

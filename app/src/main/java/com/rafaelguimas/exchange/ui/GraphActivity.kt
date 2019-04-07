@@ -1,7 +1,8 @@
-package com.rafaelguimas.exchange
+package com.rafaelguimas.exchange.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.rafaelguimas.exchange.R
 import com.rafaelguimas.exchange.ui.graph.GraphFragment
 
 class GraphActivity : AppCompatActivity() {
