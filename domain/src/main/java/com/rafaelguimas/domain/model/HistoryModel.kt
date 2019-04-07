@@ -1,11 +1,11 @@
 package com.rafaelguimas.domain.model
 
 data class HistoryModel(
-    val base: String,
-    val rates: HashMap<String, HashMap<String, Double>>
+    val base: String = "",
+    val rates: HashMap<String, HashMap<String, Double>> = HashMap()
 ) {
     companion object {
-        fun random() = HistoryModel(
+        fun dummy() = HistoryModel(
             "EUR",
             hashMapOf(
                 Pair("2018-02-22", hashMapOf(Pair("USD", 1.2276))),

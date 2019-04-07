@@ -37,10 +37,10 @@ class GraphViewModel(
             progressLiveData.value = true
 
             val formatter = DateTimeFormatter.ofPattern(DATE_FORMAT)
-            val startDate = LocalDateTime.now().format(formatter) // Current
-            val endDate = LocalDateTime.now().minusMonths(months.toLong()).format(formatter)
+            val currentDate = LocalDateTime.now().format(formatter) // Current
+            val startDate = LocalDateTime.now().minusMonths(months.toLong()).format(formatter)
 
-            val result = getHistoryExchangeUseCase(endDate, startDate)
+            val result = getHistoryExchangeUseCase(startDate, currentDate)
             when (result) {
                 is Result.Success -> historyExchangeLiveData.value = result.data
                 is Result.Error -> failureLiveData.value = result.failure

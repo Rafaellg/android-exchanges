@@ -1,4 +1,4 @@
-package com.rafaelguimas.data
+package com.rafaelguimas.data.retrofit
 
 import com.rafaelguimas.domain.model.HistoryModel
 import kotlinx.coroutines.Deferred
@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface ExchangeRatesApiInterface {
     @GET("/history")
-    fun getEurHistory(
+    fun getExchangeHistory(
         @Query("start_at") startAt: String,
         @Query("end_at") endAt: String,
         @Query("base") base: String,
