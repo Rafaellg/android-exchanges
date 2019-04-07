@@ -24,27 +24,27 @@
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:text="@string/action_period_6m"
-        app:layout_constraintEnd_toStartOf="@id/btThreeMonths"
+        app:layout_constraintEnd_toStartOf="@id/btGraphThreeMonths"
         app:layout_constraintStart_toEndOf="@id/btGraphOneYear"
         app:layout_constraintTop_toTopOf="@+id/btGraphOneYear" />
 
     <Button
-        android:id="@+id/btThreeMonths"
+        android:id="@+id/btGraphThreeMonths"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:text="@string/action_period_3m"
-        app:layout_constraintEnd_toStartOf="@id/btOneMonth"
+        app:layout_constraintEnd_toStartOf="@id/btGraphOneMonth"
         app:layout_constraintStart_toEndOf="@id/btGraphSixMonths"
         app:layout_constraintTop_toTopOf="@+id/btGraphSixMonths" />
 
     <Button
-        android:id="@+id/btOneMonth"
+        android:id="@+id/btGraphOneMonth"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:text="@string/action_period_1m"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btThreeMonths"
-        app:layout_constraintTop_toTopOf="@+id/btThreeMonths" />
+        app:layout_constraintStart_toEndOf="@id/btGraphThreeMonths"
+        app:layout_constraintTop_toTopOf="@+id/btGraphThreeMonths" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lcGraphChart"

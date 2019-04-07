@@ -1,5 +1,6 @@
 package com.rafaelguimas.exchange.ui.graph
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -40,10 +41,10 @@ class GraphFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btGraphOneYear.setOnClickListener { viewModel.updateGraphMonthPeriod(12) }
-        btGraphSixMonths.setOnClickListener { viewModel.updateGraphMonthPeriod(6) }
-        btThreeMonths.setOnClickListener { viewModel.updateGraphMonthPeriod(3) }
-        btOneMonth.setOnClickListener { viewModel.updateGraphMonthPeriod(1) }
+        btGraphOneYear.setOnClickListener { onUpdateGraphClick(12) }
+        btGraphSixMonths.setOnClickListener { onUpdateGraphClick(6) }
+        btGraphThreeMonths.setOnClickListener { onUpdateGraphClick(3) }
+        btGraphOneMonth.setOnClickListener { onUpdateGraphClick(1) }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -100,5 +101,21 @@ class GraphFragment : Fragment() {
         // Set data on graph
         lcGraphChart.data = LineData(dataSet)
         lcGraphChart.invalidate()
+    }
+
+    private fun onUpdateGraphClick(months: Int) {
+        btGraphOneYear.textSize = 14f
+        btGraphSixMonths.textSize = 14f
+        btGraphThreeMonths.textSize = 14f
+        btGraphOneMonth.textSize = 14f
+
+        when (months) {
+            12 -> btGraphOneYear.textSize = 18f
+            6 -> btGraphSixMonths.textSize = 18f
+            3 -> btGraphThreeMonths.textSize = 18f
+            1 -> btGraphOneMonth.textSize = 18f
+        }
+
+        viewModel.updateGraphMonthPeriod(months)
     }
 }
